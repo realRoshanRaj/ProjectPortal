@@ -1,0 +1,12 @@
+11
+Forms,https://forms.google.com,GOOGLE
+Gmail,https://mail.google.com,GOOGLE
+Slides,https://slides.google.com,GOOGLE
+Classroom,https://classroom.google.com/?emr=0,GOOGLE
+Schoology,https://novi.schoology.com,GOOGLE
+Drive,https://accounts.google.com/ServiceLogin?service=wise&passive=true&continue=http%3A%2F%2Fdrive.google.com%2F%3Futm_source%3Den_US&utm_medium=button&utm_campaign=web&utm_content=gotodrive&usp=gtd&ltmpl=drive,GOOGLE
+Docs,https://www.docs.google.com,GOOGLE
+Mistar,https://mistar.oakland.k12.mi.us/novi/StudentPortal,CUSTOM WITH GOOGLE USER AND PASS,Pin,Password,LoginButton
+Inbox,https://inbox.google.com,GOOGLE
+Sheets,https://sheets.google.com,GOOGLE
+Calendar,https://calendar.google.com,GOOGLE

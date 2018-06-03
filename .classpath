@@ -30,5 +30,7 @@
 	<classpathentry kind="lib" path="C:/Users/Rosha/.m2/repository/com/github/axet/java-flac-encoder/0.3.8/java-flac-encoder-0.3.8.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Rosha/.m2/repository/org/json/json/20150729/json-20150729.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Rosha/.m2/repository/javazoom/jlayer/1.0.1/jlayer-1.0.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Rosha/Downloads/apache-commons.jar/apache-commons.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Rosha/Downloads/apache-commons-lang.jar/apache-commons-lang.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
