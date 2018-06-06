@@ -326,12 +326,16 @@ public class LinkChooser extends javax.swing.JFrame {
 
 	private void deleteBttnActionPerformed(java.awt.event.ActionEvent evt) {
 		// Algorithms.getInstance().nameToURL.remove(jList1.getSelectedValue());
-		int row = Algorithms.getInstance().findRow(Algorithms.getInstance().allData, 0, jList1.getSelectedValue());
-		String[][] finalArray = Algorithms.getInstance().removeRow(Algorithms.getInstance().allData, row);
-		Algorithms.getInstance().allData = finalArray;
-		Algorithms.getInstance().updateDictionaryFromArray();
-		updateModel();
-		Algorithms.getInstance().updateTextFile();
+		if (!jList1.isSelectionEmpty()) {
+			int row = Algorithms.getInstance().findRow(Algorithms.getInstance().allData, 0, jList1.getSelectedValue());
+			String[][] finalArray = Algorithms.getInstance().removeRow(Algorithms.getInstance().allData, row);
+			Algorithms.getInstance().allData = finalArray;
+			Algorithms.getInstance().updateDictionaryFromArray();
+			updateModel();
+			Algorithms.getInstance().updateTextFile();
+		} else {
+			new ErrorPopup("Select an item to delete.").setVisible(true);
+		}
 	}
 
 	private void startBttnActionPerformed(java.awt.event.ActionEvent evt) {

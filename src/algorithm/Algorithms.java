@@ -121,6 +121,47 @@ public class Algorithms {
 		}
 		return str;
 	}
+	
+	public void readWebsiteItems() {
+		try {
+			java.io.BufferedReader in = new java.io.BufferedReader(new java.io.FileReader("websites.txt"));
+			int numberOfSites = Integer.parseInt(in.readLine());
+			if (numberOfSites == 0) {
+				in.close();
+				String[][] x = { { "Forms", "https://forms.google.com", "GOOGLE" },
+						{ "Gmail", "https://mail.google.com", "GOOGLE" },
+						{ "Slides", "https://slides.google.com", "GOOGLE" },
+						{ "Classroom", "https://classroom.google.com/?emr=0", "GOOGLE" },
+						{ "Schoology", "https://novi.schoology.com", "GOOGLE" },
+						{ "Drive",
+								"https://accounts.google.com/ServiceLogin?service=wise&passive=true&continue=http%3A%2F%2Fdrive.google.com%2F%3Futm_source%3Den_US&utm_medium=button&utm_campaign=web&utm_content=gotodrive&usp=gtd&ltmpl=drive",
+								"GOOGLE" },
+						{ "Docs", "https://www.docs.google.com", "GOOGLE" },
+						{ "Mistar", "https://mistar.oakland.k12.mi.us/novi/StudentPortal",
+								"CUSTOM WITH GOOGLE USER AND PASS", "Pin", "Password", "LoginButton" },
+						{ "Inbox", "https://inbox.google.com", "GOOGLE" },
+						{ "Sheets", "https://sheets.google.com", "GOOGLE" },
+						{ "Calendar", "https://calendar.google.com", "GOOGLE" } };
+				instance.allData = x;
+				instance.updateTextFile();
+				instance.updateDictionaryFromArray();
+				return;
+			}
+			instance.allData = new String[numberOfSites][];
+			for (int x = 0; x < numberOfSites; x++) {
+				String[] split = in.readLine().split(",");
+				instance.allData[x] = split;
+				if (split[2].equals("CUSTOM")) {
+					instance.allData[x][6] = instance
+							.decryptText(instance.allData[x][6]);
+				}
+			}
+			in.close();
+		} catch (NumberFormatException | IOException e) {
+			e.printStackTrace();
+		}
+		instance.updateDictionaryFromArray();
+	}
 
 	public void updateTextFile() {
 		try {
@@ -197,8 +238,8 @@ public class Algorithms {
 	}
 
 	public int findRow(final Object[][] objects, final int n, final Object target) {
-		for (int i = 0; i < Algorithms.getInstance().allData.length; i++) {
-			if (Algorithms.getInstance().allData[i][n].equals(target)) {
+		for (int i = 0; i < instance.allData.length; i++) {
+			if (instance.allData[i][n].equals(target)) {
 				return i;
 			}
 		}

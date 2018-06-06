@@ -1,3 +1,5 @@
+package main;
+
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
@@ -22,11 +24,11 @@ import validityChecker.EmailCheck;
  *
  * @author Roshan
  */
+@SuppressWarnings("serial")
 public class StartupWindow extends javax.swing.JFrame {
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @param args
@@ -74,7 +76,7 @@ public class StartupWindow extends javax.swing.JFrame {
 
 	boolean firstTime;
 
-	final String[] lang = algorithm.Algorithms.getInstance().languages;
+	final String[] lang = Algorithms.getInstance().languages;
 
 	private javax.swing.JComboBox<String> langComboBox;
 
@@ -92,7 +94,7 @@ public class StartupWindow extends javax.swing.JFrame {
 
 	private javax.swing.JLabel title;
 
-	final int SHIFT = Math.abs(new Random().nextInt());
+	public final static int SHIFT = Math.abs(new Random().nextInt());
 
 	public StartupWindow() {
 		// readLangFile();
@@ -120,7 +122,7 @@ public class StartupWindow extends javax.swing.JFrame {
 					error = true;
 				}
 				if (!error) {
-					Algorithms.getInstance().setEncryptionNumber(SHIFT);
+					// Algorithms.getInstance().setEncryptionNumber(SHIFT);
 					String shiftChar = new Integer(SHIFT).toString();
 					for (char x : shiftChar.toCharArray()) {
 						out.print((char) Integer.parseInt(String.valueOf(x)));
@@ -139,7 +141,6 @@ public class StartupWindow extends javax.swing.JFrame {
 					out.println();
 				}
 				out.close();
-
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -156,7 +157,7 @@ public class StartupWindow extends javax.swing.JFrame {
 
 		}
 		this.setVisible(false);
-
+		Algorithms.getInstance().updateTextFile();
 		linkChooser = new LinkChooser(emailField.getText(), passwordField.getPassword());
 		linkChooser.setVisible(true);
 	}
@@ -400,6 +401,8 @@ public class StartupWindow extends javax.swing.JFrame {
 			shift = Integer.parseInt(finalShift);
 			Algorithms.getInstance().setEncryptionNumber(shift);
 
+			// Algorithms.getInstance().updateDictionaryFromArray();
+
 			String email = in.readLine();
 			emailField.setText(email);
 
@@ -415,6 +418,7 @@ public class StartupWindow extends javax.swing.JFrame {
 			System.out.println("error");
 			firstTime = true;
 		}
+		Algorithms.getInstance().readWebsiteItems();
 	}
 
 	private void rememberMeCheckActionPerformed() {
