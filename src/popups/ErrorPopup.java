@@ -1,5 +1,7 @@
 package popups;
 
+import java.awt.Color;
+
 import javax.swing.JComponent;
 import javax.swing.KeyStroke;
 
@@ -17,9 +19,9 @@ import javax.swing.KeyStroke;
 public class ErrorPopup extends javax.swing.JFrame {
 
 	static String error;
-	boolean darkTheme = false;
-	java.awt.Color backgroundColor = java.awt.Color.BLACK;
-	java.awt.Color txtColor = new java.awt.Color(102, 190, 107);
+	boolean darkTheme = true;
+	java.awt.Color backgroundColor = new java.awt.Color(77, 77, 77);
+	java.awt.Color txtColor = Color.white;
 
 	/**
 	 * Creates new form ErrorPopup
@@ -86,6 +88,7 @@ public class ErrorPopup extends javax.swing.JFrame {
 						.addComponent(closeButton, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
 						.addGap(27, 27, 27)));
 		pack();
+		setLocationRelativeTo(null);
 	}// </editor-fold>
 
 	private void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {
@@ -98,10 +101,12 @@ public class ErrorPopup extends javax.swing.JFrame {
 		getContentPane().setBackground(backgroundColor);
 
 		errorLabel.setForeground(txtColor);
-		errorLabel.setBackground(backgroundColor);
+		errorLabel.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 14));
 
-		closeButton.setForeground(txtColor);
-		closeButton.setBackground(backgroundColor);
+		closeButton.setBackground(new java.awt.Color(0,128,129));
+		closeButton.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 14));
+	
+		
 	}
 
 	/**

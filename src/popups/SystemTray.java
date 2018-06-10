@@ -12,7 +12,7 @@ public class SystemTray {
 		// Obtain only one instance of the SystemTray object
 		java.awt.SystemTray tray = java.awt.SystemTray.getSystemTray();
 		// If the icon is a file
-		Image image = Toolkit.getDefaultToolkit().createImage("frogForce.png");
+		Image image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("logo.png"));
 		// Alternative (if the icon is on the classpath):
 		// Image image =
 		// Toolkit.getDefaultToolkit().createImage(getClass().getResource("frogForce.png"));
@@ -25,5 +25,17 @@ public class SystemTray {
 		tray.add(trayIcon);
 
 		trayIcon.displayMessage(first, second, x);
+	}
+	
+	public static void main(String[] a) {
+		try {
+			new SystemTray("Does it", "work", MessageType.NONE);
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (AWTException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
 	}
 }

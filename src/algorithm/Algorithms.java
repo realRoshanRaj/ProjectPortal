@@ -46,9 +46,6 @@ public class Algorithms {
 
 	int encryptionNum;
 
-	public Algorithms() {
-	}
-
 	public static enum Action {
 		OPEN, SEARCH, WEB_ADDRESS;
 	}
@@ -121,7 +118,7 @@ public class Algorithms {
 		}
 		return str;
 	}
-	
+
 	public void readWebsiteItems() {
 		try {
 			java.io.BufferedReader in = new java.io.BufferedReader(new java.io.FileReader("websites.txt"));
@@ -152,8 +149,7 @@ public class Algorithms {
 				String[] split = in.readLine().split(",");
 				instance.allData[x] = split;
 				if (split[2].equals("CUSTOM")) {
-					instance.allData[x][6] = instance
-							.decryptText(instance.allData[x][6]);
+					instance.allData[x][6] = instance.decryptText(instance.allData[x][6]);
 				}
 			}
 			in.close();
@@ -329,9 +325,5 @@ public class Algorithms {
 	}
 
 	// public static void main(String[] a) {
-	// Algorithms.getInstance().setEncryptionNumber(129993);
-	// String x = Algorithms.getInstance().decryptText("130073 130058 130076 130076
-	// 130080 130072 130075 130061 ");
-	// System.out.println(x);
 	// }
 }

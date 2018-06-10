@@ -2,6 +2,7 @@ package main;
 
 import java.awt.AWTException;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
@@ -32,6 +33,7 @@ import algorithm.Algorithms.Action;
 import googleAPI.SpeechRecognition.SpeechRecognition;
 import internet.InternetWindow;
 import popups.ErrorPopup;
+import popups.FinalGradeCalculator;
 
 /**
  *
@@ -186,6 +188,7 @@ public class LinkChooser extends javax.swing.JFrame {
 		});
 
 		// darkTheme();
+		darkTheme();
 
 		addBttn.setText("Add");
 		addBttn.setActionCommand("Add");
@@ -264,25 +267,16 @@ public class LinkChooser extends javax.swing.JFrame {
 						.addGap(11, 11, 11)));
 		startBttn.doClick();
 		pack();
+
+		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("logo.png")));
 	}// </editor-fold>
 
 	private void nextBttnActionPerformed() {
+		String[] noBrowser = new String[] { "Final Grade Calculator" };
 
+		boolean noGo = false;
 		if (stopBttn.isEnabled()) {
 			stopBttn.doClick();
-		}
-		switch (browser) {
-		case CHROME:
-			System.setProperty("webdriver.chrome.args", "--disable-logging");
-			System.setProperty("webdriver.chrome.silentOutput", "true");
-			System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
-			ChromeOptions chromeOptions = new ChromeOptions();
-			chromeOptions.addArguments("--log-level=3");
-			chromeOptions.addArguments("--incognito");
-			driver = new ChromeDriver(chromeOptions);
-			break;
-		default:
-			break;
 		}
 		// System.setProperty("webdriver.chrome.args", "--disable-logging");
 		// System.setProperty("webdriver.chrome.silentOutput", "true");
@@ -294,24 +288,67 @@ public class LinkChooser extends javax.swing.JFrame {
 		if (!jList1.isSelectionEmpty()) {
 			commandArea.setText("open " + jList1.getSelectedValue());
 		}
-		Action action = Algorithms.getInstance().mainStringAlgorithm(commandArea.getText().toLowerCase());
-		String str = Algorithms.getInstance().getGeneratedURL(jList1, action, commandArea.getText().toLowerCase());
-		(new InternetWindow(driver, str)).run();
+		for (String x : noBrowser) {
+			if(Algorithms.getInstance().toTitleCase(commandArea.getText()).contains(x)) {
+				noGo = true;
+				break;
+			}
+		}
+		if (!noGo) {
+			switch (browser) {
+			case CHROME:
+				System.setProperty("webdriver.chrome.args", "--disable-logging");
+				System.setProperty("webdriver.chrome.silentOutput", "true");
+				System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
+				ChromeOptions chromeOptions = new ChromeOptions();
+				chromeOptions.addArguments("--log-level=3");
+				chromeOptions.addArguments("--incognito");
+				driver = new ChromeDriver(chromeOptions);
+				break;
+			default:
+				break;
+			}
+			Action action = Algorithms.getInstance().mainStringAlgorithm(commandArea.getText().toLowerCase());
+			String str = Algorithms.getInstance().getGeneratedURL(jList1, action, commandArea.getText().toLowerCase());
+			(new InternetWindow(driver, str)).run();
 
-		if (jList1.getSelectedValue() != null) {
-			doAction(jList1.getSelectedValue().toString());
+			if (jList1.getSelectedValue() != null) {
+				doAction(jList1.getSelectedValue().toString());
+			}
+		} else {
+			new FinalGradeCalculator().setVisible(true);
 		}
 		jList1.clearSelection();
 
 	}
 
-	private void closeBttnActionPerformed(java.awt.event.ActionEvent evt) {
+	private void darkTheme() {
+		getContentPane().setBackground(new java.awt.Color(77, 77, 77));
+		addBttn.setBackground(new Color(0, 128, 129));
+		updateBttn.setBackground(new Color(0, 128, 129));
+		closeBttn.setBackground(new Color(0, 128, 129));
+		deleteBttn.setBackground(new Color(0, 128, 129));
+		nextBttn.setBackground(new Color(0, 128, 129));
+		startBttn.setBackground(new Color(0, 128, 129));
+		stopBttn.setBackground(new Color(0, 128, 129));
+		titleLabel.setFont(new Font("Copperplate Gothic Bold", 0, 24));
+		jList1.setFont(new Font("Copperplate Gothic Bold", 0, 14));
+		addBttn.setFont(new Font("Copperplate Gothic Bold", 0, 12));
+		updateBttn.setFont(new Font("Copperplate Gothic Bold", 0, 12));
+		closeBttn.setFont(new Font("Copperplate Gothic Bold", 0, 12));
+		deleteBttn.setFont(new Font("Copperplate Gothic Bold", 0, 12));
+		nextBttn.setFont(new Font("Copperplate Gothic Bold", 0, 12));
+		startBttn.setFont(new Font("Copperplate Gothic Bold", 0, 12));
+		stopBttn.setFont(new Font("Copperplate Gothic Bold", 0, 12));
 
+		titleLabel.setForeground(Color.white);
+	}
+
+	private void closeBttnActionPerformed(java.awt.event.ActionEvent evt) {
 		this.dispose();
 	}
 
 	private void addBttnActionPerformed(java.awt.event.ActionEvent evt) {
-
 		new NewSiteWindow(false).setVisible(true);
 	}
 
@@ -339,7 +376,6 @@ public class LinkChooser extends javax.swing.JFrame {
 	}
 
 	private void startBttnActionPerformed(java.awt.event.ActionEvent evt) {
-
 		normalSpeechRec = new SpeechRecognition();
 		normalSpeechRec.duplexListener(commandArea);
 		startBttn.setEnabled(false);
@@ -365,7 +401,6 @@ public class LinkChooser extends javax.swing.JFrame {
 		// confirm.autoEnd();
 		// String str = confirm.getMessage();
 		// System.out.println("THE conf FINALLLLL: " + str);
-
 	}
 
 	private void doAction(String str) {
@@ -554,25 +589,6 @@ public class LinkChooser extends javax.swing.JFrame {
 			e.printStackTrace();
 		}
 		clipboard.setContents(new StringSelection(old), new StringSelection(old));
-	}
-
-	private void darkTheme() {
-		Color bg = Color.BLACK;
-		Color fg = Color.WHITE;
-		getContentPane().setBackground(bg);
-		commandArea.setBackground(bg);
-		commandArea.setForeground(fg);
-		closeBttn.setBackground(bg);
-		closeBttn.setForeground(fg);
-		nextBttn.setBackground(bg);
-		nextBttn.setForeground(fg);
-		startBttn.setBackground(bg);
-		startBttn.setForeground(fg);
-		stopBttn.setBackground(bg);
-		stopBttn.setForeground(fg);
-		titleLabel.setForeground(fg);
-		jList1.setForeground(fg);
-		jList1.setBackground(bg);
 	}
 
 	/**

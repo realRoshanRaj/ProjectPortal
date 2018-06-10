@@ -3,14 +3,11 @@ package main;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.Random;
-
-import javax.swing.JCheckBox;
-import javax.swing.JComponent;
-import javax.swing.KeyStroke;
 
 import com.darkprograms.speech.translator.GoogleTranslate;
 
@@ -26,10 +23,6 @@ import validityChecker.EmailCheck;
  */
 @SuppressWarnings("serial")
 public class StartupWindow extends javax.swing.JFrame {
-	/**
-	 *
-	 */
-
 	/**
 	 * @param args
 	 *            the command line arguments
@@ -110,56 +103,59 @@ public class StartupWindow extends javax.swing.JFrame {
 	}
 
 	private void continueBttnActionPerformed(java.awt.event.ActionEvent evt) {
-		if (rememberMeCheck.isSelected()) {
-			boolean error = false;
-			try {
-				if (firstTime) {
-					new File("accountInfo.txt").createNewFile();
-				}
-				java.io.PrintWriter out = new java.io.PrintWriter(new java.io.FileWriter("accountInfo.txt"));
-				if (!new EmailCheck(emailField.getText()).isValidEmail()) {
-					new ErrorPopup("Enter Valid Email").setVisible(true);
-					error = true;
-				}
-				if (!error) {
-					// Algorithms.getInstance().setEncryptionNumber(SHIFT);
-					String shiftChar = new Integer(SHIFT).toString();
-					for (char x : shiftChar.toCharArray()) {
-						out.print((char) Integer.parseInt(String.valueOf(x)));
-						out.print(" ");
-					}
-					out.println();
-					// out.println(SHIFT);
-					out.println(emailField.getText());
-
-					char[] passwordChar = passwordField.getPassword();
-					// out.println(passwordChar.length);
-					for (char i : passwordChar) {
-						out.print(((int) i) + SHIFT);
-						out.print(" ");
-					}
-					out.println();
-				}
-				out.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+		boolean error = false;
+		if (passwordField.getPassword().length == 0 || emailField.getText().isEmpty()) {
+			new ErrorPopup("Please fill in all fields.").setVisible(true);
+		} else if (!new EmailCheck(emailField.getText()).isValidEmail()) {
+			new ErrorPopup("Enter Valid Email").setVisible(true);
+			error = true;
 		} else {
-			if (new File("accountInfo.txt").exists()) {
+			if (rememberMeCheck.isSelected()) {
 				try {
+					if (firstTime) {
+						new File("accountInfo.txt").createNewFile();
+					}
 					java.io.PrintWriter out = new java.io.PrintWriter(new java.io.FileWriter("accountInfo.txt"));
-					out.println();
+					if (!error) {
+						// Algorithms.getInstance().setEncryptionNumber(SHIFT);
+						String shiftChar = new Integer(SHIFT).toString();
+						for (char x : shiftChar.toCharArray()) {
+							out.print((char) Integer.parseInt(String.valueOf(x)));
+							out.print(" ");
+						}
+						out.println();
+						// out.println(SHIFT);
+						out.println(emailField.getText());
+
+						char[] passwordChar = passwordField.getPassword();
+						// out.println(passwordChar.length);
+						for (char i : passwordChar) {
+							out.print(((int) i) + SHIFT);
+							out.print(" ");
+						}
+						out.println();
+					}
 					out.close();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-			}
+			} else {
+				if (new File("accountInfo.txt").exists()) {
+					try {
+						java.io.PrintWriter out = new java.io.PrintWriter(new java.io.FileWriter("accountInfo.txt"));
+						out.println();
+						out.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
 
+			}
+			this.setVisible(false);
+			Algorithms.getInstance().updateTextFile();
+			linkChooser = new LinkChooser(emailField.getText(), passwordField.getPassword());
+			linkChooser.setVisible(true);
 		}
-		this.setVisible(false);
-		Algorithms.getInstance().updateTextFile();
-		linkChooser = new LinkChooser(emailField.getText(), passwordField.getPassword());
-		linkChooser.setVisible(true);
 	}
 
 	private void exitBttnActionPerformed(java.awt.event.ActionEvent evt) {
@@ -238,7 +234,8 @@ public class StartupWindow extends javax.swing.JFrame {
 				continueBttnActionPerformed(e);
 			}
 
-		}, KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
+		}, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, 0),
+				javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW);
 		continueBttn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
 		exitBttn.setText("Exit");
@@ -356,8 +353,10 @@ public class StartupWindow extends javax.swing.JFrame {
 
 		pack();
 
+		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("logo.png")));
+
 		emailField.requestFocus();
-		setResizable(false);
+		// setResizable(false);
 		// setUndecorated(true);
 		setLocationRelativeTo(null);
 
@@ -433,13 +432,11 @@ public class StartupWindow extends javax.swing.JFrame {
 					Algorithms.getInstance().find(lang, langComboBox.getSelectedItem().toString()))
 							.getTranslatedText());
 		} catch (IOException e) {
-
 			e.printStackTrace();
 		}
 	}
 
 	private void showPasswordButtonMouseReleased(java.awt.event.MouseEvent evt) {
-
 		passwordField.setEchoChar('*');
 		try {
 			showPasswordButton.setText(new TranslatorFromEnglish("Show Password",
@@ -450,7 +447,6 @@ public class StartupWindow extends javax.swing.JFrame {
 			e.printStackTrace();
 		}
 		passwordField.requestFocus();
-
 	}
 
 	private void updateALLLangFields() {
@@ -471,18 +467,12 @@ public class StartupWindow extends javax.swing.JFrame {
 			t.start();
 		}
 		javax.swing.JCheckBox[] check = { rememberMeCheck };
-		for (JCheckBox x : check) {
+		for (javax.swing.JCheckBox x : check) {
 			new Thread(() -> {
 				updateLanguageField(x, prevLang, langComboBox.getSelectedItem().toString());
 			}).start();
 		}
-		try {
-			Thread.sleep(0);
-			setSize(langComboBox.getWidth() + 186, getHeight());
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-
+		setSize(langComboBox.getWidth() + 186, getHeight());
 	}
 
 	private void updateLanguageField(javax.swing.JButton label, String startLang, String endLang) {
@@ -524,6 +514,5 @@ public class StartupWindow extends javax.swing.JFrame {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
 }
