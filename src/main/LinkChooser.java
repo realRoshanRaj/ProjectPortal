@@ -3,6 +3,7 @@ package main;
 import java.awt.AWTException;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
@@ -32,6 +33,7 @@ import algorithm.Algorithms;
 import algorithm.Algorithms.Action;
 import googleAPI.SpeechRecognition.SpeechRecognition;
 import internet.InternetWindow;
+import popups.DesktopApplications;
 import popups.ErrorPopup;
 import popups.FinalGradeCalculator;
 
@@ -53,6 +55,7 @@ public class LinkChooser extends javax.swing.JFrame {
 	Browser browser = Browser.CHROME;
 
 	public LinkChooser(String email, char[] password) {
+		super("Project Portal");
 		this.email = email;
 		this.password = new String(password);
 		// initDictionary();
@@ -60,6 +63,7 @@ public class LinkChooser extends javax.swing.JFrame {
 	}
 
 	public LinkChooser(String email, String password) {
+		super("Project Portal");
 		this.email = email;
 		this.password = password;
 		// initDictionary();
@@ -116,7 +120,7 @@ public class LinkChooser extends javax.swing.JFrame {
 		deleteBttn = new javax.swing.JButton();
 		updateBttn = new javax.swing.JButton();
 
-		setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
 		updateModel();
 		jList1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -289,28 +293,31 @@ public class LinkChooser extends javax.swing.JFrame {
 			commandArea.setText("open " + jList1.getSelectedValue());
 		}
 		for (String x : noBrowser) {
-			if(Algorithms.getInstance().toTitleCase(commandArea.getText()).contains(x)) {
+			if (Algorithms.getInstance().toTitleCase(commandArea.getText()).contains(x)) {
 				noGo = true;
 				break;
 			}
 		}
 		if (!noGo) {
-			switch (browser) {
-			case CHROME:
-				System.setProperty("webdriver.chrome.args", "--disable-logging");
-				System.setProperty("webdriver.chrome.silentOutput", "true");
-				System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
-				ChromeOptions chromeOptions = new ChromeOptions();
-				chromeOptions.addArguments("--log-level=3");
-				chromeOptions.addArguments("--incognito");
-				driver = new ChromeDriver(chromeOptions);
-				break;
-			default:
-				break;
+			if (!Algorithms.getInstance().getCategory(jList1.getSelectedValue().toString()).equals("DESKTOP APPLICATON")) {
+				switch (browser) {
+				case CHROME:
+					System.setProperty("webdriver.chrome.args", "--disable-logging");
+					System.setProperty("webdriver.chrome.silentOutput", "true");
+					System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
+					ChromeOptions chromeOptions = new ChromeOptions();
+					chromeOptions.addArguments("--log-level=3");
+					chromeOptions.addArguments("--incognito");
+					driver = new ChromeDriver(chromeOptions);
+					break;
+				default:
+					break;
+				}
+				Action action = Algorithms.getInstance().mainStringAlgorithm(commandArea.getText().toLowerCase());
+				String str = Algorithms.getInstance().getGeneratedURL(jList1, action,
+						commandArea.getText().toLowerCase());
+				(new InternetWindow(driver, str)).run();
 			}
-			Action action = Algorithms.getInstance().mainStringAlgorithm(commandArea.getText().toLowerCase());
-			String str = Algorithms.getInstance().getGeneratedURL(jList1, action, commandArea.getText().toLowerCase());
-			(new InternetWindow(driver, str)).run();
 
 			if (jList1.getSelectedValue() != null) {
 				doAction(jList1.getSelectedValue().toString());
@@ -345,7 +352,7 @@ public class LinkChooser extends javax.swing.JFrame {
 	}
 
 	private void closeBttnActionPerformed(java.awt.event.ActionEvent evt) {
-		this.dispose();
+		dispatchEvent(new java.awt.event.WindowEvent(this, java.awt.event.WindowEvent.WINDOW_CLOSING));
 	}
 
 	private void addBttnActionPerformed(java.awt.event.ActionEvent evt) {
@@ -411,7 +418,7 @@ public class LinkChooser extends javax.swing.JFrame {
 			if (finalStr.equals(x)) {
 				break;
 			} else {
-				finalStr = algorithm.Algorithms.getInstance().getCategory(finalStr);
+				finalStr = Algorithms.getInstance().getCategory(finalStr);
 			}
 		}
 		switch (finalStr) {
@@ -534,10 +541,15 @@ public class LinkChooser extends javax.swing.JFrame {
 				driver.findElement(By.id(loginBttnID)).click();
 			}
 			break;
+		case "DESKTOP APPLICATON":
+			new DesktopApplications(Algorithms.getInstance().allData[index][1]);
+			break;
 		default:
 			defaultLogin();
 			break;
 		}
+
+		this.setState(Frame.ICONIFIED);
 	}
 
 	private void googleSignin(String email, String password) {
@@ -547,7 +559,7 @@ public class LinkChooser extends javax.swing.JFrame {
 		while (driver.getCurrentUrl().equals(uri)) {
 		}
 		try {
-			Thread.sleep(250);
+			Thread.sleep(500);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

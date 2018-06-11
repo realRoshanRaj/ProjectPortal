@@ -1,6 +1,8 @@
 
 package popups;
 
+import java.awt.event.ActionEvent;
+
 /**
  *
  * @author Rosha
@@ -11,6 +13,12 @@ public class FinalGradeCalculator extends javax.swing.JFrame {
 	 * Creates new form FinalGradeCalcGUI
 	 */
 	public FinalGradeCalculator() {
+		super("Final Grade Calculator");
+		initComponents();
+	}
+
+	public FinalGradeCalculator(String title) {
+		super(title);
 		initComponents();
 	}
 
@@ -46,6 +54,15 @@ public class FinalGradeCalculator extends javax.swing.JFrame {
 				continueBttnActionPerformed(evt);
 			}
 		});
+		continueBttn.registerKeyboardAction(new java.awt.event.ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				continueBttnActionPerformed(e);
+			}
+
+		}, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, 0),
+				javax.swing.JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
 		questionLabel.setText("Choose Which Action You Would Like to do: ");
 
@@ -64,6 +81,15 @@ public class FinalGradeCalculator extends javax.swing.JFrame {
 				calcBttnActionPerformed(evt);
 			}
 		});
+		calcBttn.registerKeyboardAction(new java.awt.event.ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				calcBttnActionPerformed(e);
+			}
+
+		}, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, 0),
+				javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW);
 
 		jTextField1.addFocusListener(new java.awt.event.FocusAdapter() {
 			public void focusGained(java.awt.event.FocusEvent evt) {
@@ -336,7 +362,7 @@ public class FinalGradeCalculator extends javax.swing.JFrame {
 			double result = d - (1.0 - w) * c;
 			result = result / w;
 			result *= 100;
-			result = (double) Math.round(result * 100)/100;
+			result = (double) Math.round(result * 100) / 100;
 			String x = "You will need to score at least " + result + "% on your final to get a " + jTextField2.getText()
 					+ "% overall.";
 			new ErrorPopup(x).setVisible(true);
@@ -348,9 +374,9 @@ public class FinalGradeCalculator extends javax.swing.JFrame {
 			new ErrorPopup("Your overall course grade is " + result / 100 + "%.").setVisible(true);
 		}
 	}
-	
+
 	private void darkTheme() {
-		
+
 	}
 
 	/**

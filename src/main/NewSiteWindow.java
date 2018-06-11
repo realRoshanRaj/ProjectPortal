@@ -1,6 +1,9 @@
 package main;
 
+import javax.swing.JLabel;
+
 import algorithm.Algorithms;
+import popups.ErrorPopup;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -24,11 +27,13 @@ public class NewSiteWindow extends javax.swing.JFrame {
 	int row;
 
 	public NewSiteWindow(boolean isUpdate) {
+		super("Project Portal");
 		this.isUpdate = isUpdate;
 		initComponents();
 	}
 
 	public NewSiteWindow(String key, boolean isUpdate) {
+		super("Project Portal");
 		this.isUpdate = isUpdate;
 		this.key = key;
 		this.row = Algorithms.getInstance().findRow(Algorithms.getInstance().allData, 0, this.key);
@@ -43,7 +48,6 @@ public class NewSiteWindow extends javax.swing.JFrame {
 	 */
 	// <editor-fold defaultstate="collapsed" desc="Generated Code">
 	private void initComponents() {
-
 		urlLabel = new javax.swing.JLabel();
 		urlField = new javax.swing.JTextField();
 		nameLabel = new javax.swing.JLabel();
@@ -78,7 +82,7 @@ public class NewSiteWindow extends javax.swing.JFrame {
 		categoryLabel.setText("Category: ");
 
 		categoryComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(
-				new String[] { "GOOGLE", "CUSTOM WITH GOOGLE USER AND PASS", "CUSTOM" }));
+				new String[] { "GOOGLE", "CUSTOM WITH GOOGLE USER AND PASS", "DESKTOP APPLICATON", "CUSTOM" }));
 		categoryComboBox.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				categoryComboBoxActionPerformed();
@@ -171,61 +175,76 @@ public class NewSiteWindow extends javax.swing.JFrame {
 	private void add_updateBttnActionPerformed(java.awt.event.ActionEvent evt) {
 		String key = siteNameField.getText();
 		String value = urlField.getText();
+		boolean err = false;
+		if (key.isEmpty()) {
+			err = true;
+			new ErrorPopup("Please fill in all fields.").setVisible(true);
+		}
 		if (!value.startsWith("https://")) {
 			value = "https://" + value;
 		}
-		if (add_updateBttn.getText().equals("ADD")) {
-			int length = Algorithms.getInstance().allData.length + 1;
-			String[][] array = new String[length][];
-			for (int i = 0; i < Algorithms.getInstance().allData.length; i++) {
-				array[i] = Algorithms.getInstance().allData[i];
-			}
-			java.util.ArrayList<String> newElement = new java.util.ArrayList<String>();
-			newElement.add(siteNameField.getText());
-			newElement.add(value);
-			newElement.add(categoryComboBox.getSelectedItem().toString());
-			System.out.println(newElement);
-			if (categoryComboBox.getSelectedItem().equals("CUSTOM WITH GOOGLE USER AND PASS")) {
-				newElement.add(userNameIdComboBox.getSelectedItem().toString());
-				newElement.add(passwordIDComboBox.getSelectedItem().toString());
-				newElement.add(loginIdComboBox.getSelectedItem().toString());
-			} else if (categoryComboBox.getSelectedItem().equals("CUSTOM")) {
-				newElement.add(userNameIdComboBox.getSelectedItem().toString());
-				newElement.add(passwordIDComboBox.getSelectedItem().toString());
-				newElement.add(userNameField.getText());
-				newElement.add(new String(passwordField.getPassword()));
-				newElement.add(loginIdComboBox.getSelectedItem().toString());
-			}
-			array[length - 1] = newElement.toArray(new String[newElement.size()]);
-			Algorithms.getInstance().allData = array;
+		if (!err) {
+			if (add_updateBttn.getText().equals("ADD")) {
+				int length = Algorithms.getInstance().allData.length + 1;
+				String[][] array = new String[length][];
+				for (int i = 0; i < Algorithms.getInstance().allData.length; i++) {
+					array[i] = Algorithms.getInstance().allData[i];
+				}
+				java.util.ArrayList<String> newElement = new java.util.ArrayList<String>();
+				newElement.add(siteNameField.getText());
+				newElement.add(value);
+				newElement.add(categoryComboBox.getSelectedItem().toString());
+				System.out.println(newElement);
+				if (categoryComboBox.getSelectedItem().equals("CUSTOM WITH GOOGLE USER AND PASS")) {
+					newElement.add(userNameIdComboBox.getSelectedItem().toString());
+					newElement.add(passwordIDComboBox.getSelectedItem().toString());
+					newElement.add(loginIdComboBox.getSelectedItem().toString());
+				} else if (categoryComboBox.getSelectedItem().equals("CUSTOM")) {
+					newElement.add(userNameIdComboBox.getSelectedItem().toString());
+					newElement.add(passwordIDComboBox.getSelectedItem().toString());
+					newElement.add(userNameField.getText());
+					newElement.add(new String(passwordField.getPassword()));
+					newElement.add(loginIdComboBox.getSelectedItem().toString());
+				}
+				array[length - 1] = newElement.toArray(new String[newElement.size()]);
+				Algorithms.getInstance().allData = array;
 
-		} else {
-			// algorithm.Algorithms.getInstance().nameToURL.replace(key, value);
-			int x = row;
-			Algorithms.getInstance().allData[x][0] = key;
-			Algorithms.getInstance().allData[x][1] = value;
-			Algorithms.getInstance().allData[x][2] = categoryComboBox.getSelectedItem().toString();
-			if (categoryComboBox.getSelectedItem().equals("CUSTOM WITH GOOGLE USER AND PASS")) {
-				Algorithms.getInstance().allData[x][3] = userNameIdComboBox.getSelectedItem().toString();
-				Algorithms.getInstance().allData[x][4] = passwordIDComboBox.getSelectedItem().toString();
-				Algorithms.getInstance().allData[x][5] = loginIdComboBox.getSelectedItem().toString();
+			} else {
+				// algorithm.Algorithms.getInstance().nameToURL.replace(key, value);
+				int x = row;
+				Algorithms.getInstance().allData[x][0] = key;
+				Algorithms.getInstance().allData[x][1] = value;
+				Algorithms.getInstance().allData[x][2] = categoryComboBox.getSelectedItem().toString();
+				if (categoryComboBox.getSelectedItem().equals("CUSTOM WITH GOOGLE USER AND PASS")) {
+					Algorithms.getInstance().allData[x][3] = userNameIdComboBox.getSelectedItem().toString();
+					Algorithms.getInstance().allData[x][4] = passwordIDComboBox.getSelectedItem().toString();
+					Algorithms.getInstance().allData[x][5] = loginIdComboBox.getSelectedItem().toString();
+				}
+				if (categoryComboBox.getSelectedItem().equals("CUSTOM")) {
+					Algorithms.getInstance().allData[x][3] = userNameIdComboBox.getSelectedItem().toString();
+					Algorithms.getInstance().allData[x][4] = passwordIDComboBox.getSelectedItem().toString();
+					Algorithms.getInstance().allData[x][5] = userNameField.getText();
+					Algorithms.getInstance().allData[x][6] = new String(passwordField.getPassword());
+					Algorithms.getInstance().allData[x][7] = loginIdComboBox.getSelectedItem().toString();
+				}
 			}
-			if (categoryComboBox.getSelectedItem().equals("CUSTOM")) {
-				Algorithms.getInstance().allData[x][3] = userNameIdComboBox.getSelectedItem().toString();
-				Algorithms.getInstance().allData[x][4] = passwordIDComboBox.getSelectedItem().toString();
-				Algorithms.getInstance().allData[x][5] = userNameField.getText();
-				Algorithms.getInstance().allData[x][6] = new String(passwordField.getPassword());
-				Algorithms.getInstance().allData[x][7] = loginIdComboBox.getSelectedItem().toString();
-			}
+			Algorithms.getInstance().updateDictionaryFromArray();
+			Algorithms.getInstance().updateTextFile();
+			StartupWindow.linkChooser.updateModel();
+			exitBttn.doClick();
 		}
-		Algorithms.getInstance().updateDictionaryFromArray();
-		Algorithms.getInstance().updateTextFile();
-		StartupWindow.linkChooser.updateModel();
-		exitBttn.doClick();
 	}
 
 	private void categoryComboBoxActionPerformed() {
-		if (categoryComboBox.getSelectedItem().equals("GOOGLE")) {
+		urlLabel.setText("URL:");
+		urlField.setText("https://");
+		if (categoryComboBox.getSelectedItem().equals("DESKTOP APPLICATON")) {
+			urlLabel.setText("Path:");
+			urlField.setText("");
+		}
+
+		if (categoryComboBox.getSelectedItem().equals("GOOGLE")
+				|| categoryComboBox.getSelectedItem().equals("DESKTOP APPLICATON")) {
 			userNameField.setVisible(false);
 			usernameLabel.setVisible(false);
 			htmlIdLabel.setVisible(false);
@@ -453,6 +472,7 @@ public class NewSiteWindow extends javax.swing.JFrame {
 	}
 
 	private void darkTheme() {
+		JLabel[] labels = new JLabel[] {};
 
 	}
 

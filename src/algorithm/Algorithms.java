@@ -93,13 +93,7 @@ public class Algorithms {
 
 	public String getCategory(String str) {
 		try {
-
-			// if (nameToCategory.get(str).toString().equals("CUSTOM")) {
-			// return str;
-			// } else {
 			str = nameToCategory.get(str).toString();
-			// }
-			System.out.println("reached");
 		} catch (Exception e) {
 			e.getMessage();
 		}

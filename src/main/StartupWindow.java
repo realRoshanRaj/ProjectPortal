@@ -1,16 +1,11 @@
 package main;
 
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Font;
-import java.awt.Toolkit;
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.Random;
-
 import com.darkprograms.speech.translator.GoogleTranslate;
-
 import algorithm.Algorithms;
 import googleAPI.TextToSpeech.TranslatorFromEnglish;
 import googleAPI.TextToSpeech.TranslatorToEnglish;
@@ -159,7 +154,7 @@ public class StartupWindow extends javax.swing.JFrame {
 	}
 
 	private void exitBttnActionPerformed(java.awt.event.ActionEvent evt) {
-		setVisible(false);
+		dispatchEvent(new java.awt.event.WindowEvent(this, java.awt.event.WindowEvent.WINDOW_CLOSING));
 	}
 
 	private void initComponents() {
@@ -199,7 +194,8 @@ public class StartupWindow extends javax.swing.JFrame {
 
 		darkTheme();
 
-		// title.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
+		// title.setjava.awt.Font(new java.awt.java.awt.Font("Times New Roman", 0, 24));
+		// // NOI18N
 		title.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 		title.setText("Welcome to Project Portal");
 		emailLabel.setText("Email:");
@@ -218,7 +214,7 @@ public class StartupWindow extends javax.swing.JFrame {
 				showPasswordButtonMouseReleased(evt);
 			}
 		});
-		showPasswordButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		showPasswordButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
 		continueBttn.setText("Continue");
 		continueBttn.addActionListener(new java.awt.event.ActionListener() {
@@ -236,7 +232,7 @@ public class StartupWindow extends javax.swing.JFrame {
 
 		}, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, 0),
 				javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW);
-		continueBttn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		continueBttn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
 		exitBttn.setText("Exit");
 		exitBttn.addActionListener(new java.awt.event.ActionListener() {
@@ -245,7 +241,7 @@ public class StartupWindow extends javax.swing.JFrame {
 				exitBttnActionPerformed(evt);
 			}
 		});
-		exitBttn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		exitBttn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
 		rememberMeCheck.setText("Remember Me");
 		rememberMeCheck.addActionListener(new java.awt.event.ActionListener() {
@@ -264,7 +260,7 @@ public class StartupWindow extends javax.swing.JFrame {
 				clearAllActionPerformed(evt);
 			}
 		});
-		clearAll.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		clearAll.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
 		langLabel.setText("Select Language:");
 
@@ -353,37 +349,37 @@ public class StartupWindow extends javax.swing.JFrame {
 
 		pack();
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("logo.png")));
+		setIconImage(java.awt.Toolkit.getDefaultToolkit().getImage(getClass().getResource("logo.png")));
 
 		emailField.requestFocus();
 		// setResizable(false);
 		// setUndecorated(true);
 		setLocationRelativeTo(null);
 
-	}// </editor-fold>
+	}
 
 	private void darkTheme() {
-		Color fg = Color.white;
-		Color bg = new java.awt.Color(77, 77, 77);
-		Color sideLabelFG = new java.awt.Color(13, 218, 224);
-		Color buttonBG = new Color(0, 128, 129);
+		java.awt.Color fg = java.awt.Color.white;
+		java.awt.Color bg = new java.awt.Color(77, 77, 77);
+		java.awt.Color sideLabelFG = new java.awt.Color(13, 218, 224);
+		java.awt.Color buttonBG = new java.awt.Color(0, 128, 129);
 		getContentPane().setBackground(bg);
 		title.setForeground(fg);
-		title.setFont(new Font("Copperplate Gothic Bold", 0, 24));
+		title.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 24));
 		javax.swing.JLabel[] label = { emailLabel, passwordLabel, langLabel };
 		for (javax.swing.JLabel x : label) {
 			x.setForeground(sideLabelFG);
-			x.setFont(new Font("Copperplate Gothic Bold", 0, 12));
+			x.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 12));
 		}
 		rememberMeCheck.setForeground(sideLabelFG);
-		rememberMeCheck.setFont(new Font("Copperplate Gothic Bold", 0, 12));
+		rememberMeCheck.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 12));
 		javax.swing.JButton[] button = { clearAll, continueBttn, exitBttn, showPasswordButton };
 		for (javax.swing.JButton x : button) {
 			x.setBackground(buttonBG);
-			x.setFont(new Font("Copperplate Gothic Bold", 0, 12));
+			x.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 12));
 		}
-		langComboBox.setFont(new Font("Copperplate Gothic Bold", 0, 12));
-		emailField.setFont(new Font("Copperplate Gothic Bold", 0, 12));
+		langComboBox.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 12));
+		emailField.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 12));
 	}
 
 	private void readAccountInfo() {

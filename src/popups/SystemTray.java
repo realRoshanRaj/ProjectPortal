@@ -25,8 +25,9 @@ public class SystemTray {
 		tray.add(trayIcon);
 
 		trayIcon.displayMessage(first, second, x);
+
 	}
-	
+
 	public static void main(String[] a) {
 		try {
 			new SystemTray("Does it", "work", MessageType.NONE);
@@ -36,6 +37,6 @@ public class SystemTray {
 		} catch (AWTException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} 
+		}
 	}
 }

@@ -31,6 +31,12 @@ public class ErrorPopup extends javax.swing.JFrame {
 		initComponents();
 	}
 
+	public ErrorPopup(String title, String error) {
+		super(title);
+		this.error = error;
+		initComponents();
+	}
+
 	/**
 	 * This method is called from within the constructor to initialize the form.
 	 * WARNING: Do NOT modify this code. The content of this method is always
@@ -89,6 +95,8 @@ public class ErrorPopup extends javax.swing.JFrame {
 						.addGap(27, 27, 27)));
 		pack();
 		setLocationRelativeTo(null);
+		
+		dispatchEvent(new java.awt.event.WindowEvent(this, java.awt.event.WindowEvent.WINDOW_GAINED_FOCUS));
 	}// </editor-fold>
 
 	private void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {
@@ -103,10 +111,9 @@ public class ErrorPopup extends javax.swing.JFrame {
 		errorLabel.setForeground(txtColor);
 		errorLabel.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 14));
 
-		closeButton.setBackground(new java.awt.Color(0,128,129));
+		closeButton.setBackground(new java.awt.Color(0, 128, 129));
 		closeButton.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 14));
-	
-		
+
 	}
 
 	/**
