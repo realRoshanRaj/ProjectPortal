@@ -180,8 +180,10 @@ public class NewSiteWindow extends javax.swing.JFrame {
 			err = true;
 			new ErrorPopup("Please fill in all fields.").setVisible(true);
 		}
-		if (!value.startsWith("https://")) {
-			value = "https://" + value;
+		if (!categoryComboBox.getSelectedItem().equals("DESKTOP APPLICATON")) {
+			if (!value.startsWith("https://")) {
+				value = "https://" + value;
+			}
 		}
 		if (!err) {
 			if (add_updateBttn.getText().equals("ADD")) {

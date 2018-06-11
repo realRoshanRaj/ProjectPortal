@@ -156,10 +156,8 @@ public class Algorithms {
 
 	public void updateTextFile() {
 		try {
-			if (!new File("websites.txt").exists()) {
-				new File("websites.txt").createNewFile();
-			}
-			java.io.PrintWriter out = new java.io.PrintWriter(new java.io.FileWriter("websites.txt"));
+			java.io.PrintWriter out = new java.io.PrintWriter(
+					new java.io.FileWriter(System.getProperty("user.dir") + java.io.File.separator + "websites.txt"));
 			int size = nameToURL.size();
 			out.println(size);
 			for (int iterator = 0; iterator < size; iterator++) {

@@ -147,7 +147,7 @@ public class LinkChooser extends javax.swing.JFrame {
 		titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 		titleLabel.setText("Enter/Say a Command Below");
 
-		nextBttn.setText("Next");
+		nextBttn.setText("Launch");
 		nextBttn.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				nextBttnActionPerformed();

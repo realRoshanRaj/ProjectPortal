@@ -1,12 +1,14 @@
 package main;
 
-import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.Random;
+
 import com.darkprograms.speech.translator.GoogleTranslate;
+
 import algorithm.Algorithms;
+import algorithm.CreateFiles;
 import googleAPI.TextToSpeech.TranslatorFromEnglish;
 import googleAPI.TextToSpeech.TranslatorToEnglish;
 import popups.ErrorPopup;
@@ -62,8 +64,6 @@ public class StartupWindow extends javax.swing.JFrame {
 
 	private javax.swing.JButton exitBttn;
 
-	boolean firstTime;
-
 	final String[] lang = Algorithms.getInstance().languages;
 
 	private javax.swing.JComboBox<String> langComboBox;
@@ -86,6 +86,13 @@ public class StartupWindow extends javax.swing.JFrame {
 
 	public StartupWindow() {
 		// readLangFile();
+		try {
+			new CreateFiles(CreateFiles.File.BOTH);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		initComponents();
 	}
 
@@ -107,10 +114,8 @@ public class StartupWindow extends javax.swing.JFrame {
 		} else {
 			if (rememberMeCheck.isSelected()) {
 				try {
-					if (firstTime) {
-						new File("accountInfo.txt").createNewFile();
-					}
-					java.io.PrintWriter out = new java.io.PrintWriter(new java.io.FileWriter("accountInfo.txt"));
+					java.io.PrintWriter out = new java.io.PrintWriter(new java.io.FileWriter(
+							System.getProperty("user.dir") + java.io.File.separator + "accountInfo.txt"));
 					if (!error) {
 						// Algorithms.getInstance().setEncryptionNumber(SHIFT);
 						String shiftChar = new Integer(SHIFT).toString();
@@ -158,15 +163,6 @@ public class StartupWindow extends javax.swing.JFrame {
 	}
 
 	private void initComponents() {
-		File x = new File("accountInfo.txt");
-		if (x.exists()) {
-			System.out.println("It's here");
-			firstTime = false;
-		} else {
-			System.out.println("Need to create");
-			firstTime = true;
-		}
-
 		/* GUI */
 		title = new javax.swing.JLabel();
 		emailLabel = new javax.swing.JLabel();
@@ -182,13 +178,8 @@ public class StartupWindow extends javax.swing.JFrame {
 		langComboBox = new javax.swing.JComboBox<>();
 
 		setTitle("Project Portal");
-
-		if (firstTime) {
-			// showPasswordButton.setVisible(true);
-		} else {
-			readAccountInfo();
-			// showPasswordButton.setVisible(false);
-		}
+		
+		readAccountInfo();
 
 		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -411,7 +402,6 @@ public class StartupWindow extends javax.swing.JFrame {
 			showPasswordButton.setVisible(false);
 		} catch (Exception e) {
 			System.out.println("error");
-			firstTime = true;
 		}
 		Algorithms.getInstance().readWebsiteItems();
 	}
