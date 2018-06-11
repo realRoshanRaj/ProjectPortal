@@ -299,7 +299,14 @@ public class LinkChooser extends javax.swing.JFrame {
 			}
 		}
 		if (!noGo) {
-			if (!Algorithms.getInstance().getCategory(jList1.getSelectedValue().toString()).equals("DESKTOP APPLICATON")) {
+			boolean b;
+			try {
+				b = Algorithms.getInstance().getCategory(jList1.getSelectedValue().toString())
+						.equals("DESKTOP APPLICATON");
+			} catch (NullPointerException e) {
+				b = false;
+			}
+			if (!b) {
 				switch (browser) {
 				case CHROME:
 					System.setProperty("webdriver.chrome.args", "--disable-logging");

@@ -363,8 +363,14 @@ public class FinalGradeCalculator extends javax.swing.JFrame {
 			result = result / w;
 			result *= 100;
 			result = (double) Math.round(result * 100) / 100;
-			String x = "You will need to score at least " + result + "% on your final to get a " + jTextField2.getText()
-					+ "% overall.";
+			String x;
+			if (result < 0) {
+				x = "That grade is too low to achieve. Aim higher!!";
+			} else {
+				x = "You will need to score at least " + result + "% on your final to get a "
+						+ jTextField2.getText() + "% overall.";
+			}
+			
 			new ErrorPopup(x).setVisible(true);
 		} else {
 			Double c = Double.parseDouble(jTextField1.getText()), f = Double.parseDouble(jTextField2.getText()),

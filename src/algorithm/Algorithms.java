@@ -132,7 +132,8 @@ public class Algorithms {
 								"CUSTOM WITH GOOGLE USER AND PASS", "Pin", "Password", "LoginButton" },
 						{ "Inbox", "https://inbox.google.com", "GOOGLE" },
 						{ "Sheets", "https://sheets.google.com", "GOOGLE" },
-						{ "Calendar", "https://calendar.google.com", "GOOGLE" } };
+						{ "Calendar", "https://calendar.google.com", "GOOGLE" },
+						{ "Final Grade Calculator", "Blank", "Other" } };
 				instance.allData = x;
 				instance.updateTextFile();
 				instance.updateDictionaryFromArray();
