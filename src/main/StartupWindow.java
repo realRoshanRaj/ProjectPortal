@@ -9,6 +9,7 @@ import com.darkprograms.speech.translator.GoogleTranslate;
 
 import algorithm.Algorithms;
 import algorithm.CreateFiles;
+import googleAPI.TextToSpeech.TextToSpeech;
 import googleAPI.TextToSpeech.TranslatorFromEnglish;
 import googleAPI.TextToSpeech.TranslatorToEnglish;
 import popups.ErrorPopup;
@@ -48,6 +49,15 @@ public class StartupWindow extends javax.swing.JFrame {
 		java.awt.EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
+				String targetLang = System.getProperty("user.language");
+				String translatedTxt = "Hello and welcome to projekt portal";
+				try {
+					translatedTxt = GoogleTranslate.translate("en", targetLang, "Hello and welcome to projekt portal!");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				welcomeMsg = new TextToSpeech(translatedTxt);
 				new StartupWindow().setVisible(true);
 			}
 		});
@@ -57,6 +67,8 @@ public class StartupWindow extends javax.swing.JFrame {
 
 	private javax.swing.JButton clearAll;
 	private javax.swing.JButton continueBttn;
+
+	private static TextToSpeech welcomeMsg;
 
 	private javax.swing.JTextField emailField;
 
@@ -346,6 +358,15 @@ public class StartupWindow extends javax.swing.JFrame {
 		// setResizable(false);
 		// setUndecorated(true);
 		setLocationRelativeTo(null);
+
+		while (welcomeMsg.isFinished() == false) {
+			System.out.print(" ");
+
+		}
+
+		if (emailField.getText().isEmpty()) {
+			new TextToSpeech("Start by entering your google email and password! Then click continue.");
+		}
 
 	}
 
