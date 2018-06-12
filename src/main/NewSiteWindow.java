@@ -1,5 +1,7 @@
 package main;
 
+import java.awt.Color;
+
 import javax.swing.JLabel;
 
 import algorithm.Algorithms;
@@ -474,7 +476,45 @@ public class NewSiteWindow extends javax.swing.JFrame {
 	}
 
 	private void darkTheme() {
-		JLabel[] labels = new JLabel[] {};
+		java.awt.Color fg = Color.white;
+		java.awt.Color bg = new java.awt.Color(77, 77, 77);
+		getContentPane().setBackground(bg);
+		add_updateBttn.setBackground(new java.awt.Color(0, 128, 129));
+		categoryComboBox.setBackground(bg);
+		categoryComboBox.setForeground(fg);
+		categoryLabel.setForeground(fg);
+		exitBttn.setBackground(new java.awt.Color(0, 128, 129));
+		htmlIdLabel.setForeground(fg);
+		loginBttnLabel.setForeground(fg);
+		loginIdComboBox.setBackground(bg);
+		nameLabel.setForeground(fg);
+		passwordIDComboBox.setBackground(bg);
+		passwordIDLabel.setBackground(bg);
+		passwordLabel.setForeground(fg);
+		showBttn.setBackground(new java.awt.Color(0, 128, 129));
+		urlLabel.setForeground(fg);
+		usernameLabel.setForeground(fg);
+		userNameIDLabel.setForeground(fg);
+		passwordIDLabel.setForeground(fg);
+
+		add_updateBttn.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 12));
+		categoryComboBox.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 12));
+		categoryLabel.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 12));
+		exitBttn.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 12));
+		htmlIdLabel.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 12));
+		loginBttnLabel.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 12));
+		loginIdComboBox.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 12));
+		nameLabel.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 12));
+		passwordField.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 12));
+		passwordIDComboBox.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 12));
+		passwordIDLabel.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 12));
+		passwordLabel.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 12));
+		showBttn.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 12));
+		urlLabel.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 12));
+		usernameLabel.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 12));
+		userNameIDLabel.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 12));
+		passwordIDLabel.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 12));
+		userNameIdComboBox.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 12));
 
 	}
 

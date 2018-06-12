@@ -178,7 +178,7 @@ public class StartupWindow extends javax.swing.JFrame {
 		langComboBox = new javax.swing.JComboBox<>();
 
 		setTitle("Project Portal");
-		
+
 		readAccountInfo();
 
 		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
