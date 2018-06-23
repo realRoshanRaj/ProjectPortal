@@ -14,11 +14,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.KeyStroke;
@@ -28,11 +30,14 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxProfile;
 
 import algorithm.Algorithms;
 import algorithm.Algorithms.Action;
 import googleAPI.SpeechRecognition.SpeechRecognition;
 import internet.InternetWindow;
+import internet.RunCommandScript;
 import popups.DesktopApplications;
 import popups.ErrorPopup;
 import popups.FinalGradeCalculator;
@@ -74,7 +79,7 @@ public class LinkChooser extends javax.swing.JFrame {
 	}
 
 	public enum Browser {
-		CHROME;
+		CHROME, FIREFOX;
 	}
 
 	public void updateModel() {
@@ -176,14 +181,16 @@ public class LinkChooser extends javax.swing.JFrame {
 		commandArea.setRows(5);
 		jScrollPane2.setViewportView(commandArea);
 
-		startBttn.setText("START");
+		// startBttn.setText("START");
+		startBttn.setIcon(new ImageIcon(getClass().getResource("microphone.png")));
 		startBttn.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				startBttnActionPerformed(evt);
 			}
 		});
 
-		stopBttn.setText("STOP");
+		// stopBttn.setText("STOP");
+		stopBttn.setIcon(new ImageIcon(getClass().getResource("muted.png")));
 		stopBttn.setEnabled(false);
 		stopBttn.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -290,7 +297,15 @@ public class LinkChooser extends javax.swing.JFrame {
 		// options.addArguments("--incognito");
 
 		if (!jList1.isSelectionEmpty()) {
-			commandArea.setText("open " + jList1.getSelectedValue());
+			if (Algorithms.getInstance().nameToCategory.get(jList1.getSelectedValue()).equals("COMMAND SCRIPT")) {
+				Algorithms.getInstance().nameToCategory.get(jList1.getSelectedValue());
+			} else {
+				commandArea.setText("open " + jList1.getSelectedValue());
+			}
+		}
+
+		if (commandArea.getText().toLowerCase().contains("open ")) {
+			jList1.setSelectedValue(commandArea.getText().substring(5, commandArea.getText().length()), true);
 		}
 		for (String x : noBrowser) {
 			if (Algorithms.getInstance().toTitleCase(commandArea.getText()).contains(x)) {
@@ -306,28 +321,38 @@ public class LinkChooser extends javax.swing.JFrame {
 			} catch (NullPointerException e) {
 				b = false;
 			}
-			if (!b) {
-				switch (browser) {
-				case CHROME:
-					System.setProperty("webdriver.chrome.args", "--disable-logging");
-					System.setProperty("webdriver.chrome.silentOutput", "true");
-					System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
-					ChromeOptions chromeOptions = new ChromeOptions();
-					chromeOptions.addArguments("--log-level=3");
-					chromeOptions.addArguments("--incognito");
-					driver = new ChromeDriver(chromeOptions);
-					break;
-				default:
-					break;
-				}
-				Action action = Algorithms.getInstance().mainStringAlgorithm(commandArea.getText().toLowerCase());
-				String str = Algorithms.getInstance().getGeneratedURL(jList1, action,
-						commandArea.getText().toLowerCase());
-				(new InternetWindow(driver, str)).run();
-			}
+			// if (!b) {
+			// switch (browser) {
+			// case CHROME:
+			// System.setProperty("webdriver.chrome.args", "--disable-logging");
+			// System.setProperty("webdriver.chrome.silentOutput", "true");
+			// System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
+			// ChromeOptions chromeOptions = new ChromeOptions();
+			// chromeOptions.addArguments("--log-level=3");
+			// chromeOptions.addArguments("--incognito");
+			// driver = new ChromeDriver(chromeOptions);
+			// break;
+			// case FIREFOX:
+			// File file = new File("firebug-1.8.1.xpi");
+			// FirefoxProfile firefoxProfile = new FirefoxProfile();
+			// firefoxProfile.addExtension(file);
+			// firefoxProfile.setPreference("extensions.firebug.currentVersion", "1.8.1");
+			// // Avoid startup screen
+			//
+			// WebDriver driver = new FirefoxDriver();
+			// break;
+			// }
+			// Action action =
+			// Algorithms.getInstance().mainStringAlgorithm(commandArea.getText().toLowerCase());
+			// String str = Algorithms.getInstance().getGeneratedURL(jList1, action,
+			// commandArea.getText().toLowerCase());
+			// (new InternetWindow(driver, str)).run();
+			// }
 
 			if (jList1.getSelectedValue() != null) {
 				doAction(jList1.getSelectedValue().toString());
+			} else {
+				doAction(commandArea.getText());
 			}
 		} else {
 			new FinalGradeCalculator().setVisible(true);
@@ -418,6 +443,9 @@ public class LinkChooser extends javax.swing.JFrame {
 	}
 
 	private void doAction(String str) {
+		ChromeOptions chromeOptions;
+		Action action;
+		String str1;
 		int index = Algorithms.getInstance().findRow(Algorithms.getInstance().allData, 0, str);
 		String[] options = { "Mistar" };
 		String finalStr = str;
@@ -428,8 +456,19 @@ public class LinkChooser extends javax.swing.JFrame {
 				finalStr = Algorithms.getInstance().getCategory(finalStr);
 			}
 		}
+	
 		switch (finalStr) {
 		case "Mistar":
+			System.setProperty("webdriver.chrome.args", "--disable-logging");
+			System.setProperty("webdriver.chrome.silentOutput", "true");
+			System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
+			chromeOptions = new ChromeOptions();
+			chromeOptions.addArguments("--log-level=3");
+			chromeOptions.addArguments("--incognito");
+			driver = new ChromeDriver(chromeOptions);
+			action = Algorithms.getInstance().mainStringAlgorithm(commandArea.getText().toLowerCase());
+			str1 = Algorithms.getInstance().getGeneratedURL(jList1, action, commandArea.getText().toLowerCase());
+			(new InternetWindow(driver, str1)).run();
 			driver.findElement(By.id("Pin")).sendKeys(this.email);
 			driver.findElement(By.id("Password")).sendKeys(this.password);
 			driver.findElement(By.id("LoginButton")).click();
@@ -490,14 +529,42 @@ public class LinkChooser extends javax.swing.JFrame {
 		// driver.findElement(By.id("u_0_2")).click();
 		// break;
 		case "GOOGLE":
+			System.setProperty("webdriver.chrome.args", "--disable-logging");
+			System.setProperty("webdriver.chrome.silentOutput", "true");
+			System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
+			chromeOptions = new ChromeOptions();
+			chromeOptions.addArguments("--log-level=3");
+			chromeOptions.addArguments("--incognito");
+			driver = new ChromeDriver(chromeOptions);
+			action = Algorithms.getInstance().mainStringAlgorithm(commandArea.getText().toLowerCase());
+			str1 = Algorithms.getInstance().getGeneratedURL(jList1, action, commandArea.getText().toLowerCase());
+			(new InternetWindow(driver, str1)).run();
 			googleSignin(this.email, this.password);
 			break;
 		case "CUSTOM WITH GOOGLE USER AND PASS":
+			System.setProperty("webdriver.chrome.args", "--disable-logging");
+			System.setProperty("webdriver.chrome.silentOutput", "true");
+			System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
+			chromeOptions = new ChromeOptions();
+			chromeOptions.addArguments("--log-level=3");
+			chromeOptions.addArguments("--incognito");
+			driver = new ChromeDriver(chromeOptions);
+			action = Algorithms.getInstance().mainStringAlgorithm(commandArea.getText().toLowerCase());
+			str1 = Algorithms.getInstance().getGeneratedURL(jList1, action, commandArea.getText().toLowerCase());
+			(new InternetWindow(driver, str1)).run();
 			driver.findElement(By.id(algorithm.Algorithms.getInstance().allData[index][3])).sendKeys(this.email);
 			driver.findElement(By.id(algorithm.Algorithms.getInstance().allData[index][4])).sendKeys(this.password);
 			driver.findElement(By.id(algorithm.Algorithms.getInstance().allData[index][5])).click();
 			break;
 		case "CUSTOM":
+			System.setProperty("webdriver.chrome.silentOutput", "true");
+			System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
+			chromeOptions = new ChromeOptions();
+			chromeOptions.addArguments("--log-level=3");
+			chromeOptions.addArguments("--incognito");
+			driver = new ChromeDriver(chromeOptions);
+			action = Algorithms.getInstance().mainStringAlgorithm(commandArea.getText().toLowerCase());
+			str1 = Algorithms.getInstance().getGeneratedURL(jList1, action, commandArea.getText().toLowerCase());
 			String userID = Algorithms.getInstance().allData[index][3];
 			String passwordID = Algorithms.getInstance().allData[index][4];
 			String username = Algorithms.getInstance().allData[index][5];
@@ -551,8 +618,20 @@ public class LinkChooser extends javax.swing.JFrame {
 		case "DESKTOP APPLICATON":
 			new DesktopApplications(Algorithms.getInstance().allData[index][1]);
 			break;
+		case "COMMAND SCRIPT":
+			new RunCommandScript(Algorithms.getInstance().allData[index][1]);
+			break;
 		default:
-			defaultLogin();
+			System.setProperty("webdriver.chrome.args", "--disable-logging");
+			System.setProperty("webdriver.chrome.silentOutput", "true");
+			System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
+			chromeOptions = new ChromeOptions();
+			chromeOptions.addArguments("--log-level=3");
+			chromeOptions.addArguments("--incognito");
+			driver = new ChromeDriver(chromeOptions);
+			action = Algorithms.getInstance().mainStringAlgorithm(commandArea.getText().toLowerCase());
+			str1 = Algorithms.getInstance().getGeneratedURL(jList1, action, commandArea.getText().toLowerCase());
+			(new InternetWindow(driver, str1)).run();
 			break;
 		}
 

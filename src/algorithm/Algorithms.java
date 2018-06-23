@@ -47,7 +47,7 @@ public class Algorithms {
 	int encryptionNum;
 
 	public static enum Action {
-		OPEN, SEARCH, WEB_ADDRESS;
+		OPEN, SEARCH, WEB_ADDRESS, PATH, CMD;
 	}
 
 	public Action mainStringAlgorithm(String str) {
@@ -55,9 +55,13 @@ public class Algorithms {
 		if (str.toLowerCase().endsWith(".com")) {
 			return Action.WEB_ADDRESS;
 		}
+		if(str.toLowerCase().contains("run") || str.toLowerCase().contains("cmd")) {
+			return Action.CMD;
+		}
 		if (str.toLowerCase().contains("open ")) {
 			return Action.OPEN;
 		}
+		
 		return Action.SEARCH;
 	}
 
@@ -84,9 +88,7 @@ public class Algorithms {
 			list.setSelectedValue(toTitleCase(str), true);
 			finalStr = nameToURL.get(toTitleCase(str)).toString();
 		} catch (Exception e) {
-			for (int x = index; x < split.length; x++) {
-				finalStr += split[x] + " ";
-			}
+			finalStr = str.substring(5, str.length());
 		}
 		return finalStr;
 	}

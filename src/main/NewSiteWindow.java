@@ -1,8 +1,7 @@
 package main;
 
 import java.awt.Color;
-
-import javax.swing.JLabel;
+import java.util.Arrays;
 
 import algorithm.Algorithms;
 import popups.ErrorPopup;
@@ -83,13 +82,16 @@ public class NewSiteWindow extends javax.swing.JFrame {
 
 		categoryLabel.setText("Category: ");
 
-		categoryComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(
-				new String[] { "GOOGLE", "CUSTOM WITH GOOGLE USER AND PASS", "DESKTOP APPLICATON", "CUSTOM" }));
+		String[] categories = new String[] { "GOOGLE",
+				"CUSTOM WITH GOOGLE USER AND PASS", "DESKTOP APPLICATON", "CUSTOM", "COMMAND SCRIPT" };
+		Arrays.sort(categories);
+		categoryComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(categories));
 		categoryComboBox.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				categoryComboBoxActionPerformed();
 			}
 		});
+		categoryComboBox.setSelectedItem("GOOGLE");
 
 		if (isUpdate) {
 			add_updateBttn.setText("UPDATE");
@@ -182,7 +184,10 @@ public class NewSiteWindow extends javax.swing.JFrame {
 			err = true;
 			new ErrorPopup("Please fill in all fields.").setVisible(true);
 		}
-		if (!categoryComboBox.getSelectedItem().equals("DESKTOP APPLICATON")) {
+		if (categoryComboBox.getSelectedItem().equals("DESKTOP APPLICATON")
+				|| categoryComboBox.getSelectedItem().equals("COMMAND SCRIPT")) {
+			
+		} else {
 			if (!value.startsWith("https://")) {
 				value = "https://" + value;
 			}
@@ -245,10 +250,14 @@ public class NewSiteWindow extends javax.swing.JFrame {
 		if (categoryComboBox.getSelectedItem().equals("DESKTOP APPLICATON")) {
 			urlLabel.setText("Path:");
 			urlField.setText("");
+		} else if (categoryComboBox.getSelectedItem().equals("COMMAND SCRIPT")) {
+			urlLabel.setText("<html>Command Script</html>");
+			urlField.setText("");
 		}
 
 		if (categoryComboBox.getSelectedItem().equals("GOOGLE")
-				|| categoryComboBox.getSelectedItem().equals("DESKTOP APPLICATON")) {
+				|| categoryComboBox.getSelectedItem().equals("DESKTOP APPLICATON")
+				|| categoryComboBox.getSelectedItem().equals("COMMAND SCRIPT")) {
 			userNameField.setVisible(false);
 			usernameLabel.setVisible(false);
 			htmlIdLabel.setVisible(false);

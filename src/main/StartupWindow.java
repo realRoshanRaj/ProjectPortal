@@ -49,15 +49,16 @@ public class StartupWindow extends javax.swing.JFrame {
 		java.awt.EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				String targetLang = System.getProperty("user.language");
-				String translatedTxt = "Hello and welcome to projekt portal";
-				try {
-					translatedTxt = GoogleTranslate.translate("en", targetLang, "Hello and welcome to projekt portal!");
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				welcomeMsg = new TextToSpeech(translatedTxt);
+				new Thread(() -> {
+					String targetLang = System.getProperty("user.language");
+					String translatedTxt = "Hello and welcome to projekt portal";
+					try {
+						translatedTxt = GoogleTranslate.translate("en", targetLang, "Welcome to projekt portal!");
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					welcomeMsg = new TextToSpeech(translatedTxt);
+				}).start();
 				new StartupWindow().setVisible(true);
 			}
 		});
@@ -68,6 +69,7 @@ public class StartupWindow extends javax.swing.JFrame {
 	private javax.swing.JButton clearAll;
 	private javax.swing.JButton continueBttn;
 
+	@SuppressWarnings("unused")
 	private static TextToSpeech welcomeMsg;
 
 	private javax.swing.JTextField emailField;
@@ -101,7 +103,6 @@ public class StartupWindow extends javax.swing.JFrame {
 		try {
 			new CreateFiles(CreateFiles.File.BOTH);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -359,14 +360,23 @@ public class StartupWindow extends javax.swing.JFrame {
 		// setUndecorated(true);
 		setLocationRelativeTo(null);
 
-		while (welcomeMsg.isFinished() == false) {
-			System.out.print(" ");
-
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
 		}
 
-		if (emailField.getText().isEmpty()) {
-			new TextToSpeech("Start by entering your google email and password! Then click continue.");
-		}
+		// while (welcomeMsg.isFinished() == false) {
+		// System.out.print(" ");
+		//
+		// }
+
+		// if (emailField.getText().isEmpty()) {
+		// new TextToSpeech("Start by entering your google email and password! Then
+		// click continue.");
+		// }
+
+		dispatchEvent(new java.awt.event.WindowEvent(this, java.awt.event.WindowEvent.WINDOW_GAINED_FOCUS));
 
 	}
 
